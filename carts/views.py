@@ -45,29 +45,29 @@ def add_cart(request, product_id):
     is_cart_item_exists = CartItem.objects.filter(product=product, cart=cart).exists()
     if is_cart_item_exists:
         cart_item = CartItem.objects.filter(product=product, cart=cart)
-        # existing_variations -> database
-        # current variation -> product_variation
-        # item_id -> database
         ex_var_list = []
-        id = []
+        id_list = []
         for item in cart_item:
-            existing_variation = item.variations.all()
-            ex_var_list.append(list(existing_variation))
-            id.append(item.id)
+            existing_variations = item.variations.all()
+            # Collect variation IDs and sort them for consistent comparison
+            ex_var_ids = sorted([var.id for var in existing_variations])
+            ex_var_list.append(ex_var_ids)
+            id_list.append(item.id)
 
-        print(ex_var_list)
+        # Sort current product variations' IDs
+        current_var_ids = sorted([var.id for var in product_variation])
 
-        if product_variation in ex_var_list:
-            # increase the cart item quantity
-            index = ex_var_list.index(product_variation)
-            item_id = id[index]
+        if current_var_ids in ex_var_list:
+            # Existing item found: increment quantity
+            index = ex_var_list.index(current_var_ids)
+            item_id = id_list[index]
             item = CartItem.objects.get(product=product, id=item_id)
             item.quantity += 1
             item.save()
-
         else:
+            # Create new cart item with variations
             item = CartItem.objects.create(product=product, quantity=1, cart=cart)
-            if len(product_variation) > 0:
+            if product_variation:
                 item.variations.clear()
                 item.variations.add(*product_variation)
             item.save()
