@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
 from store.models import Product, Variation
-
+from .forms import CheckoutForm
 
 def add_cart(request, product_id):
     product = Product.objects.get(id=product_id)
@@ -119,7 +119,6 @@ def cart(request, total=0, quantity=0, cart_items=None):
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
         tax = (2 * total)/100
-        total = total + tax
         total_price = float(total) + float(tax)    
         context = {
             'total': total,
@@ -130,4 +129,41 @@ def cart(request, total=0, quantity=0, cart_items=None):
         }
         return render(request, 'store/cart.html', context)
     except ObjectDoesNotExist:
-        pass        
+        # Return an empty cart page when no cart exists
+        context = {
+            'total': 0,
+            'quantity': 0,
+            'cart_items': [],
+            'tax': 0,
+            'total_price': 0,
+        }
+        return render(request, 'store/cart.html', context)
+
+def checkout(request):
+    form = CheckoutForm()
+    try:
+        total = 0
+        quantity = 0
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+        cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+        for cart_item in cart_items:
+            total += (cart_item.product.price * cart_item.quantity)
+            quantity += cart_item.quantity
+        tax = (2 * total)/100
+        total = total + tax
+        total_price = float(total) + float(tax)
+    except ObjectDoesNotExist:
+        return redirect('store')
+
+    context = {
+        'total': total,
+        'quantity': quantity,
+        'cart_items': cart_items,
+        'tax': tax,
+        'total_price': total_price,
+        'form': form,
+    }
+    return render(request, 'store/checkout.html', context)
+
+def place_order(request):
+    return render(request, 'store/place_order.html')    
