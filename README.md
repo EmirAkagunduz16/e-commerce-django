@@ -88,12 +88,3 @@ The application will be available at `http://127.0.0.1:8000/`
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Contact
-
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter) - email@example.com
-
-Project Link: [https://github.com/yourusername/e-commerce-django](https://github.com/yourusername/e-commerce-django)
