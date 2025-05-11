@@ -108,8 +108,12 @@ class ForgotPasswordForm(forms.Form):
      
 
 class ResetPasswordForm(forms.Form):
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': 'Enter Password',
+    }))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': 'Confirm Password',
+    }))
 
     def clean_password(self):
         password = self.cleaned_data.get('password')
@@ -123,3 +127,9 @@ class ResetPasswordForm(forms.Form):
             raise forms.ValidationError("Passwords do not match")
         return confirm_password
 
+    def __init__(self, *args, **kwargs):
+        super(ResetPasswordForm, self).__init__(*args, **kwargs)
+        self.fields['password'].widget.attrs['placeholder'] = 'Enter Password'
+        self.fields['confirm_password'].widget.attrs['placeholder'] = 'Confirm Password'
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
