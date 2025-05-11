@@ -1,0 +1,20 @@
+Django==3.1.7
+Pillow==9.5.0  # For image handling
+python-decouple==3.8  # For environment variables
+django-crispy-forms==1.14.0  # For better form rendering
+crispy-bootstrap4==2022.1  # Bootstrap 4 template pack for crispy-forms
+django-allauth==0.54.0  # For enhanced authentication
+django-environ==0.10.0  # For environment variables
+django-widget-tweaks==1.4.12  # For form field customization
+Pygments==2.15.1  # For syntax highlighting
+whitenoise==6.4.0  # For static file serving
+gunicorn==20.1.0  # For production deployment
+psycopg2-binary==2.9.6  # PostgreSQL adapter (for production)
+django-storages==1.13.2  # For handling static and media files
+boto3==1.26.137  # For AWS S3 storage (if needed)
+django-cleanup==6.0.0  # For automatic file cleanup
+django-debug-toolbar==3.8.1  # For development debugging
+django-extensions==3.2.3  # For development utilities
+django-filter==23.2  # For filtering querysets
+django-rest-framework==0.1.0  # For API development (if needed)
+django-cors-headers==4.1.0  # For handling CORS (if needed) 
