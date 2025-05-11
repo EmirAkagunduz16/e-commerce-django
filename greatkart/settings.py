@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'accounts',
     'store',
     'carts',
+    
 ]
 
 MIDDLEWARE = [
@@ -111,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Istanbul'
 
 USE_I18N = True
 
@@ -136,3 +137,21 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # custom user model
 AUTH_USER_MODEL = 'accounts.Account'
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.INFO: 'info',
+}
+
+# Email Configuration
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'emirakangunduz@gmail.com'
+EMAIL_HOST_PASSWORD = 'yiji azhq yzfn pqng '
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'emirakangunduz@gmail.com'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
