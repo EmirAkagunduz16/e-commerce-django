@@ -63,51 +63,48 @@ def login(request):
         if user is not None:
             try:
                 cart = Cart.objects.get(cart_id=_cart_id(request))
-                is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
-                if is_cart_item_exists:
-                    cart_item = CartItem.objects.filter(cart=cart)
-
-                    # Getting the product variations by cart id
-                    product_variation = []
-                    for item in cart_item:
-                        variation = item.variations.all()
-                        product_variation.append(list(variation))
-
-                    # Get the cart items from the user to access his product variations
-                    cart_item = CartItem.objects.filter(user=user)
-                    ex_var_list = []
-                    id = []
-                    for item in cart_item:
-                        existing_variation = item.variations.all()
-                        ex_var_list.append(list(existing_variation))
-                        id.append(item.id)
-
-
-                    for pr in product_variation:
-                        if pr in ex_var_list:
-                            index = ex_var_list.index(pr)
-                            item_id = id[index]
-                            item = CartItem.objects.get(id=item_id)
-                            item.quantity += 1
-                            item.user = user
-                            item.save()
-                        else:
-                            cart_item = CartItem.objects.filter(cart=cart)
-                            for item in cart_item:
-                                item.user = user
-                                item.save()
-            except:
+                session_cart_items = CartItem.objects.filter(cart=cart)
+                
+                # Merge session cart items into user's cart
+                for session_item in session_cart_items:
+                    # Get session item variations sorted by category
+                    session_variations = list(session_item.variations.all().order_by('variation_category'))
+                    
+                    # Check for existing items in user's cart with same product and variations
+                    user_cart_items = CartItem.objects.filter(user=user, product=session_item.product)
+                    match_found = False
+                    
+                    for user_item in user_cart_items:
+                        # Get user item variations sorted by category
+                        user_item_variations = list(user_item.variations.all().order_by('variation_category'))
+                        
+                        if user_item_variations == session_variations:
+                            # Merge quantities
+                            user_item.quantity += session_item.quantity
+                            user_item.save()
+                            session_item.delete()  # Remove the session item
+                            match_found = True
+                            break
+                    
+                    if not match_found:
+                        # Assign the session item to the user
+                        session_item.user = user
+                        session_item.cart = None
+                        session_item.save()
+                        
+                # Delete the session cart after merging
+                cart.delete()
+            except Cart.DoesNotExist:
                 pass
+            
             auth.login(request, user)
             messages.success(request, 'You are now logged in.')
             url = request.META.get('HTTP_REFERER')
             try:
                 query = requests.utils.urlparse(url).query
-                # next=/cart/checkout/
                 params = dict(x.split('=') for x in query.split('&'))
                 if 'next' in params:
-                    nextPage = params['next']
-                    return redirect(nextPage)
+                    return redirect(params['next'])
             except:
                 return redirect('accounts:dashboard')
         else:
