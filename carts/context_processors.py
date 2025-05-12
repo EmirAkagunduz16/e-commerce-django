@@ -10,6 +10,7 @@ def counter(request):
         try:
             cart = Cart.objects.filter(cart_id=_cart_id(request))
             if request.user.is_authenticated:
+                # Try to get cart items by user first, if that fails, fall back to cart
                 cart_items = CartItem.objects.all().filter(user=request.user)
             else:
                 cart_items = CartItem.objects.all().filter(cart=cart[:1])

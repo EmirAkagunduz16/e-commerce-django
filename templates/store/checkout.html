@@ -4,63 +4,91 @@
 
 <section class="section-content padding-y bg">
     <div class="container py-4">
-      <div class="row">
-        <!-- Shopping Details -->
-        <div class="col-lg-6 mb-4">
-          <div class="card p-4 h-100">
-            <h4 class="mb-3">Shopping Details</h4>
-            <form action="{% url 'place_order' %}" method="post">
-              {% csrf_token %}
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label>First Name</label>
-                  {{ form.first_name }}
+        <div class="row">
+            <!-- Contact Information -->
+            <div class="col-lg-6 mb-4">
+                <div class="card p-4 h-100">
+                    <h4 class="mb-3">Contact Information</h4>
+                    <form action="{% url 'place_order' %}" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <!-- Personal Details -->
+                            <div class="col-12 mb-3">
+                                <h5 class="text-muted">Personal Details</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>First Name</label>
+                                {{ form.first_name }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Last Name</label>
+                                {{ form.last_name }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Phone Number</label>
+                                {{ form.phone }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Email Address</label>
+                                {{ form.email }}
+                            </div>
+
+                            <!-- Shipping Address -->
+                            <div class="col-12 mb-3 mt-4">
+                                <h5 class="text-muted">Shipping Address</h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Address Line 1</label>
+                                {{ form.address_line_1 }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Address Line 2</label>
+                                {{ form.address_line_2 }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Country</label>
+                                {{ form.country }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>City</label>
+                                {{ form.city }}
+                            </div>
+
+                            <!-- Additional Information -->
+                            <div class="col-12 mb-3 mt-4">
+                                <h5 class="text-muted">Additional Information</h5>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label>Order Note</label>
+                                {{ form.order_note }}
+                            </div>
+
+                            <!-- Form Errors -->
+                            {% if form.errors %}
+                                <div class="col-12">
+                                    <div class="alert alert-danger">
+                                        {% for field in form %}
+                                            {% for error in field.errors %}
+                                                <p><strong>{{ field.label }}:</strong> {{ error }}</p>
+                                            {% endfor %}
+                                        {% endfor %}
+                                        {% for error in form.non_field_errors %}
+                                            <p><strong>Error:</strong> {{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary">Place Order</button>
+                            <a href="{% url 'cart' %}" class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'store' %}" class="btn btn-light">Continue Shopping</a>
+                        </div>
+                    </form>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label>Last Name</label>
-                  {{ form.last_name }}
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label>Phone Number</label>
-                  {{ form.phone }}
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label>Email Address</label>
-                  {{ form.email }}
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label>Address Line 1</label>
-                  {{ form.address_line_1 }}
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label>Address Line 2</label>
-                  {{ form.address_line_2 }}
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label>Country</label>
-                  {{ form.country }}
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label>State</label>
-                  {{ form.state }}
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label>Order Note</label>
-                  {{ form.order_note }}
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label>Payment Method</label>
-                  {{ form.payment_method }}
-                </div>
-              </div>
-              <div class="d-flex gap-2 mt-3">
-                <button type="submit" class="btn btn-primary">Place Order</button>
-                <a href="{% url 'cart' %}" class="btn btn-secondary">Cancel</a>
-                <a href="{% url 'store' %}" class="btn btn-light">Continue Shopping</a>
-              </div>
-            </form>
-          </div>
-        </div>
+            </div>
   
         <!-- Cart Items -->
         <div class="col-lg-6 mb-4">
