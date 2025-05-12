@@ -24,7 +24,8 @@ class CartItem(models.Model):
 
     class Meta:
         db_table = 'CartItem'
-
+        verbose_name = 'Cart Item'
+        verbose_name_plural = 'Cart Items'
 
     def __unicode__(self):
         return self.product

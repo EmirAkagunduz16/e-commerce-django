@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Product, Category
+from .models import Product, Category, Variation
 from carts.models import CartItem
 from carts.views import _cart_id
 from django.core.paginator import Paginator
@@ -23,10 +23,13 @@ def store(request, category_slug=None):
     page_products = paginator.get_page(page)
  
   product_count = products.count()
+  sizes = Variation.objects.sizes()  # Get all active sizes
+  
   context = {
     'products': page_products,
     'product_count': product_count,
     'categories': categories,
+    'sizes': sizes,  # Add sizes to context
   }
   return render(request, 'store/store.html', context)
 

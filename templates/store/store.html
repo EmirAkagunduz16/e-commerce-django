@@ -26,7 +26,7 @@
   <div class="card">
     <article class="filter-group">
       <header class="card-header">
-        <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
+        <a href="{% url 'store' %}" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
           <i class="icon-control fa fa-chevron-down"></i>
           <h6 class="title">Categories</h6>
         </a>
@@ -45,7 +45,7 @@
     </article> <!-- filter-group  .// -->
     <article class="filter-group">
       <header class="card-header">
-        <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" class="">
+        <a href="{% url 'store' %}" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" class="">
           <i class="icon-control fa fa-chevron-down"></i>
           <h6 class="title">Sizes </h6>
         </a>
@@ -55,30 +55,17 @@
           {% for size in sizes %}
           <label class="checkbox-btn">
             <input type="checkbox">
-            <span class="btn btn-light"> {{ size.name }} </span>
+            <span class="btn btn-light"> {{ size.variation_value }} </span>
           </label>
           {% endfor %}
-          <label class="checkbox-btn">
-            <input type="checkbox">
-            <span class="btn btn-light"> SM </span>
-          </label>
-  
-          <label class="checkbox-btn">
-            <input type="checkbox">
-            <span class="btn btn-light"> LG </span>
-          </label>
-  
-          <label class="checkbox-btn">
-            <input type="checkbox">
-            <span class="btn btn-light"> XXL </span>
-          </label>
+
         </div><!-- card-body.// -->
       </div>
     </article> <!-- filter-group .// -->
     
     <article class="filter-group">
       <header class="card-header">
-        <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
+        <a href="{% url 'store' %}" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
           <i class="icon-control fa fa-chevron-down"></i>
           <h6 class="title">Price range </h6>
         </a>
