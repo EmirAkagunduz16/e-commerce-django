@@ -12,6 +12,8 @@ from django.conf import settings
 from django.core.mail import EmailMessage
 from django.urls import reverse
 from .forms import ResetPasswordForm
+from carts.models import Cart, CartItem
+from carts.views import _cart_id
 
 
 def register(request):
@@ -58,6 +60,16 @@ def login(request):
         if form.is_valid():
             user = auth.authenticate(username=email, password=password)
             if user is not None:
+                try:
+                    cart = Cart.objects.get(cart_id=_cart_id(request))
+                    is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
+                    if is_cart_item_exists:
+                        cart_item = CartItem.objects.filter(cart=cart)
+                        for item in cart_item:
+                            item.user = user
+                            item.save()
+                except:
+                    pass
                 auth.login(request, user)
                 messages.success(request, 'You are now logged in')
                 return redirect('accounts:dashboard')

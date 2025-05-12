@@ -3,6 +3,7 @@ from .models import Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
 from store.models import Product, Variation
 from .forms import CheckoutForm
+from django.contrib.auth.decorators import login_required       
 
 def add_cart(request, product_id):
     product = Product.objects.get(id=product_id)
@@ -83,6 +84,7 @@ def add_cart(request, product_id):
         cart_item.save()
     return redirect('cart')
 
+
 def remove_cart(request, product_id, cart_item_id):
     product = get_object_or_404(Product, id=product_id)
     try:
@@ -110,6 +112,7 @@ def _cart_id(request):
     if not cart:
         cart = request.session.create()
     return cart
+
 
 def cart(request, total=0, quantity=0, cart_items=None):
     try:
@@ -139,6 +142,7 @@ def cart(request, total=0, quantity=0, cart_items=None):
         }
         return render(request, 'store/cart.html', context)
 
+@login_required(login_url='accounts:login')
 def checkout(request):
     form = CheckoutForm()
     try:
@@ -165,5 +169,7 @@ def checkout(request):
     }
     return render(request, 'store/checkout.html', context)
 
+@login_required(login_url='login')
 def place_order(request):
+
     return render(request, 'store/place_order.html')    
