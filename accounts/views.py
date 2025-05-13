@@ -25,10 +25,12 @@ def register(request):
             last_name = form.cleaned_data.get('last_name')
             email = form.cleaned_data.get('email')
             phone_number = form.cleaned_data.get('phone_number')
+            profile_picture = form.cleaned_data.get('profile_picture')
             password = form.cleaned_data.get('password')
             user_name = email.split('@')[0]
             user = Account.objects.create_user(first_name=first_name, last_name=last_name, username=user_name, email=email, password=password)
             user.phone_number = phone_number
+            user.profile_picture = profile_picture
             user.save()
             # User Activation
             current_site = get_current_site(request)
