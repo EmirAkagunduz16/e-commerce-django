@@ -14,8 +14,10 @@ from django.urls import reverse
 from .forms import ResetPasswordForm
 from carts.models import Cart, CartItem
 from carts.views import _cart_id
+from orders.models import Order
 import requests
-
+from django.db.models import Count
+from accounts.models import UserProfile
 
 def register(request):
     if request.method == 'POST':
@@ -215,10 +217,14 @@ def reset_password(request):
         return render(request, 'accounts/reset_password.html', context)
          
         
-@login_required(login_url='login')
+@login_required(login_url = 'login')
 def dashboard(request):
-    user = request.user
+    orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
+    orders_count = orders.count()
+
+    userprofile = UserProfile.objects.get(user_id=request.user.id)
     context = {
-        'user': user
+        'orders_count': orders_count,
+        'userprofile': userprofile,
     }
     return render(request, 'accounts/dashboard.html', context)

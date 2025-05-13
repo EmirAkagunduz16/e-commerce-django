@@ -114,5 +114,4 @@ def submit_review(request, product_id):
     except Exception as e:
       print(e)
       messages.error(request, 'Error submitting review.')
-      return redirect(url)
-        
+      return redirect(url)   
