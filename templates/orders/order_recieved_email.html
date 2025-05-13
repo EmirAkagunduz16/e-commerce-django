@@ -1,0 +1,14 @@
+{% autoescape off %}
+
+Hello {{ user.first_name }} {{ user.last_name }},
+
+Thank you for your order!
+
+Your order number is {{ order.order_number }}.
+
+Please click on the link below to view your order details:
+
+{{ domain }}{% url 'orders:order_details' order.order_number %}
+
+
+{% endautoescape %}

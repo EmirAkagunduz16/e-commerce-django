@@ -18,7 +18,7 @@ class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ['order_number', 'payment', 'user', 'created_at', 'updated_at']
     fieldsets = (
         ('Order Information', {'fields': ('order_number', 'payment', 'user', 'created_at', 'updated_at')}),
-        ('Shipping Information', {'fields': ('first_name', 'last_name', 'phone', 'email', 'address_line_1', 'address_line_2', 'country', 'state', 'city', 'order_note')}),
+        ('Shipping Information', {'fields': ('first_name', 'last_name', 'phone', 'email', 'address_line_1', 'address_line_2', 'country', 'city', 'order_note')}),
     )
     def has_add_permission(self, request):
         return False
